@@ -14,3 +14,6 @@ jobs: #trabajos que va ha realizar el workflow
       - name: Echo the message #nombre del paso (opcional)
         run: | #le decimos lo que debe ejecutar
           echo "Hola dario"
+      - name: Dime la fecha
+        run: date
+      - run: ls -l
