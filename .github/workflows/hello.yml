@@ -1,17 +1,16 @@
+#nombre del workflows
 name: Say hello
 
-on:
-  push:
-    branches:
-      - main
+#evento que escuchara o con el que se ejecutara el workflow
+on: #se activara
+  push: #con un push
+    branches: #ramas en las que se ejecutara
+     - main #rama
 
-jobs:
-  hello_world:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Echo the message
-        run: |
-          echo "Hola midu!"
-      - name: Dime la fecha
-        run: date
-      - run: ls -l
+jobs: #trabajos que va ha realizar el workflow
+  hello-world: # nombre del trabajo
+    runs-on: ubuntu-18.04 #le decimos en que SO va ha funcionar este trabajo
+    steps: #pasos que va ha realizar
+      - name: Echo the message #nombre del paso (opcional)
+        run: | #le decimos lo que debe ejecutar
+          echo "Hola dario"
