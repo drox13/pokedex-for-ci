@@ -29,15 +29,7 @@ jobs:
         #Ejecutamos los test
       - name: Test
         run: npm test
-        #test E2E
-     #- name: E2E test
-      #  uses: cypress-io/github-action@v2
-       # with:
-        #  command: npm run test:e2e
-         # start: npm start-test
-          #wait-on: http//localhost:5000
-
-          #Despliege en Heroku
+        #Despliege en Heroku
       - name: Deploy to Heroku
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
