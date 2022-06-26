@@ -23,3 +23,9 @@ jobs:
         #asegura que el codigo que estas integrando es correcto
       - name: Lint
         run: npm run eslint
+        #hacemos el build
+      - name: build
+        run: npm run build
+        #Ejecutamos los test
+      - name: Test
+        run: npm test
