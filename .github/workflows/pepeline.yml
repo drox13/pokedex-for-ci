@@ -1,0 +1,25 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+    #accion traida del marketplace
+    #clona nuestro proyecto en la MV
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+    #instalamos node traida del marketplace
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Intall dependencies
+        run: npm install
+        #asegura que el codigo que estas integrando es correcto
+      - name: Lint
+        run: npm run eslint
