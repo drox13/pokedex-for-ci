@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 14
       - name: Intall dependencies
-        run: npm ci
+        run: npm install
         #asegura que el codigo que estas integrando es correcto
       - name: Lint
         run: npm run eslint
@@ -31,7 +31,7 @@ jobs:
         run: npm test
         #Despliege en Heroku
       - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
+      - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           #usamos los screts que creamos antes 
             heroku_api_key: ${{secrets.HEROKU_API_KEY}}
