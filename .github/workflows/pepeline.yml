@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 14
       - name: Intall dependencies
-      - run: npm ci
+        run: npm install
         #asegura que el codigo que estas integrando es correcto
       - name: Lint
         run: npm run eslint
