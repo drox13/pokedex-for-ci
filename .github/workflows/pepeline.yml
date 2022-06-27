@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
-
+      #para controlar cuando se hagan pull request a la rama
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
 jobs:
   deploy:
     runs-on: ubuntu-18.04
