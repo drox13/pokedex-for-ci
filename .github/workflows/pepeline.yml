@@ -42,6 +42,6 @@ jobs:
             heroku_app_name: ${{secrets.HEROKU_APP}}
             heroku_email: ${{secrets.HEROKU_API_EMAIL}} 
             #chequea que la pagina esta ok
-            healthcheck: "https://${{secrets.HEROKU_APP}}/health"
+            healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
             #si el despliege falla vuelve a la version aterior
             rollbackonhealthcheckfailed: true         
