@@ -33,15 +33,4 @@ jobs:
         #Ejecutamos los test
       - name: Test
         run: npm test
-        #Despliege en Heroku
-      - name: Deploy to Heroku
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          #usamos los screts que creamos antes 
-            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-            heroku_app_name: ${{secrets.HEROKU_APP}}
-            heroku_email: ${{secrets.HEROKU_API_EMAIL}}
-            #chequea que la pagina esta ok
-            healthcheck: "https://${{secrets.HEROKU_APP}}/health"
-            #si el despliege falla vuelve a la version aterior
-            rollbackonhealthcheckfailed: true
+        
