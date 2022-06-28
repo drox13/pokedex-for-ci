@@ -60,7 +60,7 @@ jobs:
       - name: build
         run: npm run build
     #guardamos un artefeacto para usarlo en otro sitio
-      - uses: actions/uploap-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           name: dist
           path: dist
