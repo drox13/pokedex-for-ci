@@ -1,5 +1,7 @@
+#nombre del workflow
 name: Deployment Pipeline
 
+#sobre que se va ha ejecutar y con que accion se va ha disparar
 on:
   push:
     branches:
@@ -9,9 +11,11 @@ on:
     branches:
       - main
     types: [opened, synchronize]
+
+  #trabajos a realizar
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-18.04 #maquina sobre la que va ha correr
     steps:
     #accion traida del marketplace
     #clona nuestro proyecto en la MV
@@ -35,6 +39,8 @@ jobs:
         run: npm test
         #Despliege en Heroku
       - name: Deploy to Heroku
+      #para que se ejecute solo en la rama principal cuando hagan un pus
+        if: ${{ github.event_name = "push"}}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           #usamos los screts que creamos antes 
