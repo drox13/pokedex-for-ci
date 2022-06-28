@@ -95,6 +95,11 @@ jobs:
     needs: [test]
     runs-on: ubuntu-18.04 #maquina sobre la que va ha correr
     steps:
+      #accion traida del marketplace
+      #clona nuestro proyecto en la MV
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       #Despliege en Heroku
       - name: Deploy to Heroku
       #para que se ejecute solo en la rama principal cuando hagan un push
