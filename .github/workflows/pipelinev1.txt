@@ -1,0 +1,59 @@
+#nombre del workflow
+name: Deployment Pipeline
+
+#sobre que se va ha ejecutar y con que accion se va ha disparar
+on:
+  push:
+    branches:
+      - main
+      #para controlar cuando se hagan pull request a la rama
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
+
+  #trabajos a realizar
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04 #maquina sobre la que va ha correr
+    steps:
+    #permite cancelar los build redundantes deltro del workflow
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+         access_token: ${{ github.token }}
+
+    #accion traida del marketplace
+    #clona nuestro proyecto en la MV
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+    #instalamos node traida del marketplace
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Intall dependencies
+        run: npm install
+        #asegura que el codigo que estas integrando es correcto
+      - name: Lint
+        run: npm run eslint
+        #hacemos el build
+      - name: build
+        run: npm run build
+        #Ejecutamos los test
+      - name: Test
+        run: npm test
+        #Despliege en Heroku
+      - name: Deploy to Heroku
+      #para que se ejecute solo en la rama principal cuando hagan un push
+        if: ${{ github.event_name = "push"}}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          #usamos los screts que creamos antes 
+            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+            heroku_app_name: ${{secrets.HEROKU_APP}}
+            heroku_email: ${{secrets.HEROKU_API_EMAIL}} 
+            #chequea que la pagina esta ok
+            healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
+            #si el despliege falla vuelve a la version aterior
+            rollbackonhealthcheckfailed: true         

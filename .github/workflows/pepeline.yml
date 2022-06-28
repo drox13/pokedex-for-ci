@@ -14,11 +14,20 @@ on:
 
   #trabajos a realizar
 jobs:
-  deploy:
-    runs-on: ubuntu-18.04 #maquina sobre la que va ha correr
+  avoid_reduncy:
+    runs-on: ubuntu-18.04
     steps:
-    #accion traida del marketplace
-    #clona nuestro proyecto en la MV
+      #permite cancelar los build redundantes deltro del workflow
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+         access_token: ${{ github.token }}
+
+  lint:
+    runs-on: ubuntu-18.04
+    steps:
+      #accion traida del marketplace
+     #clona nuestro proyecto en la MV
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -31,15 +40,64 @@ jobs:
         #asegura que el codigo que estas integrando es correcto
       - name: Lint
         run: npm run eslint
-        #hacemos el build
+
+
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      #accion traida del marketplace
+      #clona nuestro proyecto en la MV
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      #instalamos node traida del marketplace
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Intall dependencies
+        run: npm install
+    #hacemos el build
       - name: build
         run: npm run build
+    #guardamos un artefeacto para usarlo en otro sitio
+      - uses: actions/uploap-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+
+  test:
+    #para ejecutar este trabajo se necesita los jobs que se coloquen
+    needs: [lint, build]
+    runs-on: ubuntu-18.04
+    steps:
+        #accion traida del marketplace
+        #clona nuestro proyecto en la MV
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+      #instalamos node traida del marketplace
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 14
+        - name: Intall dependencies
+          run: npm install
+      #usamos el artefacto contruido en build
+        - uses: actions/download-artifact@v2
+          with:
+            name: dist
+            path: dist
         #Ejecutamos los test
-      - name: Test
-        run: npm test
-        #Despliege en Heroku
+        - name: Test
+          run: npm test
+
+  deploy:
+    needs: [test]
+    runs-on: ubuntu-18.04 #maquina sobre la que va ha correr
+    steps:
+      #Despliege en Heroku
       - name: Deploy to Heroku
-      #para que se ejecute solo en la rama principal cuando hagan un pus
+      #para que se ejecute solo en la rama principal cuando hagan un push
         if: ${{ github.event_name = "push"}}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
